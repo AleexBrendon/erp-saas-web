@@ -1,22 +1,25 @@
-ERP SaaS Platform
+# ERP SaaS - Frontend
 
-Stack
+Frontend da aplicação ERP SaaS desenvolvido com React.
 
-Backend
-- PHP
-- API REST
-- Docker
+## Stack
 
-Frontend
 - React
 - TypeScript
-- Tailwind
-- React Query
+- Vite
+- TailwindCSS
+- Axios
+- React Router
 
-Features
+## Features
 
-- Auth JWT
+- Autenticação JWT
 - Dashboard
-- User Management
-- Products
-- Sales
+- Gestão de usuários
+- Layout SaaS moderno
+
+## Backend
+
+API disponível em:
+
+https://github.com/AleexBrendon/erp-saas-api
