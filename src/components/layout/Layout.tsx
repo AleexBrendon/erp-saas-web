@@ -4,15 +4,15 @@ import { Outlet } from "react-router-dom"
 
 export default function Layout() {
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen bg-card">
 
       <Sidebar />
 
       <div className="flex-1 flex flex-col">
 
-        <Header />
+      <Header />
 
-        <main className="p-6 overflow-auto">
+        <main className="p-[30px] overflow-auto">
           <Outlet />
         </main>
 

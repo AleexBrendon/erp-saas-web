@@ -27,9 +27,6 @@ export default function Login() {
   return (
     <div className="min-h-screen bg-[#0b1120] flex items-center justify-center p-6">
       <div className="w-full max-w-6xl min-h-[600px] bg-[#020617] rounded-3xl overflow-hidden flex shadow-[0_0_60px_rgba(0,0,0,0.6)]">
-        {error && (
-          <p className="text-red-500 text-sm">{error}</p>
-        )}
 
         <div className="w-full md:w-1/2 px-12 py-10 flex flex-col justify-center text-white">
 
@@ -74,6 +71,9 @@ export default function Login() {
             >
               {loading ? "Entrando..." : "Entrar"}
             </button>
+            {error && (
+              <p className="text-red-500 text-sm">{error}</p>
+            )}
           </form>
         </div>
 
