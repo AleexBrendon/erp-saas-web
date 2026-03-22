@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, Package } from "lucide-react"
+import { LayoutDashboard, Users, Wrench, Boxes, CalendarCheck, ShoppingCart, ListTodo, Banknote } from "lucide-react"
 import { Link } from "react-router-dom"
 
 export default function Sidebar() {
@@ -16,14 +16,39 @@ export default function Sidebar() {
           Dashboard
         </Link>
 
-        <Link to="/users" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded">
-          <Users size={18}/>
-          Usuários
+        <Link to="/clientes" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded">
+          <Users size={18} />
+          Clientes
         </Link>
 
-        <Link to="/products" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded">
-          <Package size={18}/>
+        <Link to="/servicos" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded">
+          <Wrench size={18} />
+          Serviços
+        </Link>
+
+        <Link to="/produtos" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded">
+          <Boxes size={18} />
           Produtos
+        </Link>
+
+        <Link to="/agendamentos" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded">
+          <CalendarCheck size={18}/>
+          Agendamentos
+        </Link>
+
+        <Link to="/vendas" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded">
+          <ShoppingCart size={18}/>
+          Vendas
+        </Link>
+
+        <Link to="/itensVendidos" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded">
+          <ListTodo size={18}/>
+          Itens Vendidos
+        </Link>
+
+        <Link to="/financeiro" className="flex items-center gap-2 p-2 hover:bg-gray-100 rounded">
+          <Banknote size={18}/>
+          Financeiro
         </Link>
 
       </nav>
