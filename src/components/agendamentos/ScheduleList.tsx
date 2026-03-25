@@ -1,5 +1,5 @@
 import { useState, useMemo } from "react";
-import { SquarePen, Trash2, Clock, X, Check, CircleX, Hourglass, CalendarCheck } from "lucide-react";
+import { SquarePen, Trash2, Clock, X, Check, CircleX, Hourglass, CalendarCheck, Search } from "lucide-react";
 import dayjs from "dayjs";
 
 type ScheduleItem = {
@@ -81,13 +81,17 @@ export default function ScheduleList({
       )}
 
       <div className="flex flex-col md:flex-row gap-2 mt-[24px] mb-[14px]">
-        <input
-          type="text"
-          placeholder="Buscar por cliente ou serviço..."
-          className="flex-1 border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className="relative flex-1">
+          <input
+            type="text"
+            placeholder="Buscar por cliente ou serviço..."
+            className="w-full border rounded-lg px-10 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <Search className="absolute text-gray-400 top-2.5 left-3" size={20} />
+        </div>
+
         <select
           className="border rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
           value={filterStatus}
