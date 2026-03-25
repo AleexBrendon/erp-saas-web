@@ -4,9 +4,9 @@ import Layout from "../components/layout/Layout"
 import Dashboard from "../pages/dashboard/Dashboard"
 // import Usuarios from "../pages/clientes/ClientList"
 import Clientes from "../pages/clientes/ClientList"
-// import Servicos from "../pages/servicos/Servicos"
-// import Produtos from "../pages/produtos/Produtos"
-// import Agendamentos from "../pages/agendamentos/Agendamentos"
+import Servicos from "../pages/servicos/ServiceList"
+import Produtos from "../pages/produtos/ProductList"
+import Agendamentos from "../pages/agendamento/SchedulePage"
 // import Vendas from "../pages/vendas/Vendas"
 // import ItensVendidos from "../pages/itensVendidos/ItensVendidos"
 // import Financeiro from "../pages/financeiro/Financeiro"
@@ -18,13 +18,10 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
 
-        {/* REDIRECT PADRÃO */}
         <Route path="/" element={<Navigate to="/login" />} />
 
-        {/* LOGIN */}
         <Route path="/login" element={<Login />} />
 
-        {/* ROTAS PROTEGIDAS */}
         <Route
           element={
             <PrivateRoute>
@@ -34,6 +31,9 @@ export default function Router() {
         >
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/clientes" element={<Clientes />} />
+          <Route path="/servicos" element={<Servicos />} />
+          <Route path="/produtos" element={<Produtos />} />
+          <Route path="/agendamentos" element={<Agendamentos />} />
         </Route>
 
       </Routes>

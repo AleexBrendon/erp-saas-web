@@ -6,6 +6,7 @@ export type Cliente = {
   nome: string;
   email: string;
   telefone: string;
+  documento: string;
   empresa_id?: number;
   created_at?: string;
   updated_at?: string;
@@ -16,14 +17,13 @@ export type ClientePayload = {
   nome: string;
   email: string;
   telefone: string;
+  documento: string;
   empresa_id?: number;
 };
 
 // GET
 export const getClientes = async (): Promise<Cliente[]> => {
   const res = await api.get("/clientes");
-
-  // 🔥 suporta ambos formatos: [] ou { data: [] }
   return Array.isArray(res.data) ? res.data : res.data.data;
 };
 

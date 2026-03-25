@@ -10,6 +10,31 @@ interface CustomerTableProps {
   showNotify: (msg: string, type?: 'success' | 'error') => void;
 }
 
+const formatPhone = (value: string) => {
+  if (!value) return "";
+
+  const v = value.replace(/\D/g, "").slice(0, 11);
+
+  if (v.length < 11) return v;
+
+  return v.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4");
+};
+
+const formatDocument = (value: string) => {
+  if (!value) return "";
+
+  const v = value.replace(/\D/g, "");
+
+  if (v.length <= 11) {
+    return v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+  }
+
+  return v.replace(
+    /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
+    "$1.$2.$3/$4-$5"
+  );
+};
+
 export const CustomerTable = ({ 
   customers, 
   onSelect, 
@@ -20,23 +45,23 @@ export const CustomerTable = ({
 }: CustomerTableProps) => (
   <div className="flex-1 shadow-sm border">
     <div className="flex justify-between items-center mb-[20px] ml-[30px]">
-      <h1 className="text-title font-bold text-title">Lista de Clientes</h1>
+      <h1 className="text-title font-bold">Lista de Clientes</h1>
       <button
         onClick={openCreate}
         className="bg-[#5C67FF] hover:bg-[#4a54e1] text-white px-6 py-2.5 rounded-[10px] text-sm font-medium transition-all shadow-md shadow-blue-100"
       >
-        + Add Customer
+        + Novo Cliente
       </button>
     </div>
 
     <table className="w-full text-left border-separate border-spacing-y-[10px] bg-[#F8F9FD] rounded-[10px] border-slate-100 p-[20px]">
       <thead>
         <tr className="text-[#A3AED0] text-[11px] font-bold uppercase tracking-widest">
-          <th className="px-4 pb-2">Name</th>
+          <th className="px-4 pb-2">Nome</th>
           <th className="px-4 pb-2">Email</th>
-          <th className="px-4 pb-2">Phone number</th>
-          <th className="px-4 pb-2">Gender</th>
-          <th className="px-4 pb-2 text-right">Actions</th>
+          <th className="px-4 pb-2">Telefone</th>
+          <th className="px-4 pb-2">Documento</th>
+          <th className="px-4 pb-2 text-right">Ações</th>
         </tr>
       </thead>
       <tbody>
@@ -63,8 +88,8 @@ export const CustomerTable = ({
               </div>
             </td>
             <td className="px-4 py-4 text-[#A3AED0] text-sm border-y border-transparent">{c.email}</td>
-            <td className="px-4 py-4 text-[#A3AED0] text-sm border-y border-transparent">{c.telefone}</td>
-            <td className="px-4 py-4 italic text-xs text-slate-400 border-y border-transparent">Male</td>
+            <td className="px-4 py-4 text-[#A3AED0] text-sm border-y border-transparent">{formatPhone(c.telefone)}</td>
+            <td className="px-4 py-4 text-sm text-slate-400 border-y border-transparent">{formatDocument(c.documento)}</td>
             
             <td className="px-4 py-4 rounded-r-2xl border-y border-r border-transparent text-right">
               <div className="flex justify-end gap-2">

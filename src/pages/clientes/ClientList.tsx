@@ -7,7 +7,7 @@ import {
     updateCliente,
     type Cliente,
     type ClientePayload
-} from "../../storage/clientService";
+} from "../../storage/clientStorage";
 import { CustomerTable } from "../../components/clientes/CustomerTable";
 import { CustomerDetails } from "../../components/clientes/CustomerDetails";
 
@@ -18,16 +18,30 @@ export default function ClienteList() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [deleteId, setDeleteId] = useState<number | null>(null);
     const [editingCustomer, setEditingCustomer] = useState<Cliente | null>(null);
-    const [form, setForm] = useState<ClientePayload>({ nome: "", email: "", telefone: "" });
+    const [form, setForm] = useState<ClientePayload>({ nome: "", email: "", telefone: "", documento: "" });
+    const cleanNumber = (v: string) => v.replace(/\D/g, "");
     const [notify, setNotify] = useState<{ msg: string; type: 'success' | 'error' } | null>(null);
-
-    useEffect(() => {
-        fetchClientes();
-    }, []);
 
     const showNotify = (msg: string, type: 'success' | 'error' = 'success') => {
         setNotify({ msg, type });
         setTimeout(() => setNotify(null), 4000);
+    };
+
+    const handleOpenCreate = () => {
+        setEditingCustomer(null);
+        setForm({ nome: "", email: "", telefone: "", documento: "" });
+        setIsModalOpen(true);
+    };
+
+    const handleOpenEdit = (cliente: Cliente) => {
+        setEditingCustomer(cliente);
+        setForm({
+            nome: cliente.nome || "",
+            email: cliente.email || "",
+            telefone: maskPhone(cliente.telefone || ""),
+            documento: maskDocument(cliente.documento || "")
+        });
+        setIsModalOpen(true);
     };
 
     async function fetchClientes() {
@@ -41,18 +55,6 @@ export default function ClienteList() {
             setLoading(false);
         }
     }
-
-    const handleOpenCreate = () => {
-        setEditingCustomer(null);
-        setForm({ nome: "", email: "", telefone: "" });
-        setIsModalOpen(true);
-    };
-
-    const handleOpenEdit = (cliente: Cliente) => {
-        setEditingCustomer(cliente);
-        setForm({ nome: cliente.nome, email: cliente.email, telefone: cliente.telefone });
-        setIsModalOpen(true);
-    };
 
     const handleDeleteClick = (id: number) => {
         setDeleteId(id);
@@ -72,21 +74,69 @@ export default function ClienteList() {
         }
     };
 
+    useEffect(() => {
+        fetchClientes();
+    }, []);
+
     const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-        try {
-            if (editingCustomer) {
-                await updateCliente(editingCustomer.id, form);
-                showNotify("Cliente atualizado!");
-            } else {
-                await createCliente({ ...form, empresa_id: 1 });
-                showNotify("Cadastro realizado!");
-            }
-            setIsModalOpen(false);
-            fetchClientes();
-        } catch (err) {
-            showNotify("Erro ao salvar dados.", "error");
+    e.preventDefault();
+
+    try {
+        const payload = {
+            ...form,
+            telefone: cleanNumber(form.telefone),
+            documento: cleanNumber(form.documento),
+        };
+
+        console.log("ENVIANDO:", payload);
+
+        if (editingCustomer) {
+            await updateCliente(editingCustomer.id, payload);
+            showNotify("Cliente atualizado!");
+        } else {
+            await createCliente({ ...payload, empresa_id: 1 });
+            showNotify("Cadastro realizado!");
         }
+
+        setIsModalOpen(false);
+        fetchClientes();
+    } catch (err) {
+        showNotify("Erro ao salvar dados.", "error");
+    }
+};
+
+    const maskPhone = (value: string) => {
+        value = value.replace(/\D/g, "");
+        value = value.slice(0, 11);
+        value = value.replace(/^(\d{2})(\d?)/, "($1) 9");
+
+        value = value.replace(/^(\(\d{2}\) 9)(\d{0,4})(\d{0,4}).*/, (_, p1, p2, p3) => {
+            let result = p1;
+
+            if (p2) result += " " + p2;
+            if (p3) result += "-" + p3;
+
+            return result;
+        });
+
+        return value;
+    };
+
+    const maskDocument = (value: string) => {
+        value = value.replace(/\D/g, "");
+
+        if (value.length <= 11) {
+            value = value.replace(/(\d{3})(\d)/, "$1.$2");
+            value = value.replace(/(\d{3})(\d)/, "$1.$2");
+            value = value.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        } else {
+            value = value.replace(/^(\d{2})(\d)/, "$1.$2");
+            value = value.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+            value = value.replace(/\.(\d{3})(\d)/, ".$1/$2");
+            value = value.replace(/(\d{4})(\d)/, "$1-$2");
+        }
+
+        return value.slice(0, 18);
     };
 
     if (loading) return <div className="p-[20px] text-center font-medium text-slate-500">Carregando...</div>;
@@ -149,11 +199,19 @@ export default function ClienteList() {
                             </div>
                             <div>
                                 <label className="text-xs font-bold text-[#A3AED0] uppercase mb-1 block">Email</label>
-                                <input type="email" className="w-full bg-[#F4F7FE] border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#5C67FF] outline-none" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} required />
+                                <input type="email" className="w-full bg-[#F4F7FE] border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#5C67FF] outline-none" value={form.email || ""} onChange={e => setForm({ ...form, email: e.target.value })} required />
                             </div>
                             <div>
                                 <label className="text-xs font-bold text-[#A3AED0] uppercase mb-1 block">Telefone</label>
-                                <input className="w-full bg-[#F4F7FE] border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#5C67FF] outline-none" value={form.telefone} onChange={e => setForm({ ...form, telefone: e.target.value })} required />
+                                <input className="w-full bg-[#F4F7FE] border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#5C67FF] outline-none" value={form.telefone || ""} onChange={e =>
+                                    setForm({ ...form, telefone: maskPhone(e.target.value) })
+                                } required />
+                            </div>
+                            <div>
+                                <label className="text-xs font-bold text-[#A3AED0] uppercase mb-1 block">Documento</label>
+                                <input className="w-full bg-[#F4F7FE] border-none rounded-xl p-3 text-sm focus:ring-2 focus:ring-[#5C67FF] outline-none" value={form.documento || ""} onChange={e =>
+                                    setForm({ ...form, documento: maskDocument(e.target.value) })
+                                } required />
                             </div>
                         </div>
                         <div className="flex gap-3 mt-8">

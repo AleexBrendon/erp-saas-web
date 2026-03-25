@@ -14,7 +14,9 @@ export default {
         background: "var(--color-background)",
         card: "var(--color-card)",
         navbar: "var(--gradient-navbar)",
-        title: "var(--color-title)"
+        color: "var(--color-title)",
+        colortitle: "var(--color-title-page)",
+        colorsubtitle: "var(--color-subtitle)",
       },
       fontFamily: {
         inter: ["var(--font-family)"],
@@ -27,10 +29,10 @@ export default {
         content: "var(--text-content)",
       },
       fontWeight: {
-        light: "var(--font-light)",       // 300
-        regular: "var(--font-regular)",   // 400
-        semibold: "var(--font-semibold)", // 600
-        bold: "var(--font-bold)",         // 700
+        light: "var(--font-light)",
+        regular: "var(--font-regular)",
+        semibold: "var(--font-semibold)",
+        bold: "var(--font-bold)",
       },
       spacing: {
         xs: "var(--spacing-xs)",
