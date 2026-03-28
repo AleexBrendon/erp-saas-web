@@ -1,0 +1,83 @@
+import { useMemo, useState } from "react";
+import { SquarePen, Trash2, Search } from "lucide-react";
+import dayjs from "dayjs";
+import { type VendaItemAPI } from "../../storage/salesStorage";
+
+type Props = {
+  items: VendaItemAPI[];
+  onEdit: (item: VendaItemAPI) => void;
+  onDelete: (id: number) => void;
+};
+
+export default function SalesList({ items, onEdit, onDelete }: Props) {
+  const [search, setSearch] = useState("");
+
+  const filtered = useMemo(() => {
+    return items.filter((item) =>
+      item.cliente?.nome?.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [items, search]);
+
+  return (
+    <div>
+      <div className="relative mb-4">
+        <input
+          type="text"
+          placeholder="Buscar por cliente..."
+          className="w-full border rounded-lg px-10 py-2"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <Search className="absolute top-2.5 left-3 text-gray-400" size={20} />
+      </div>
+
+      <div className="grid grid-cols-5 px-4 py-3 text-xs text-gray-400 border-b">
+        <span className="text-center">Cliente</span>
+        <span className="text-center">Total</span>
+        <span className="text-center">Status</span>
+        <span className="text-center">Data</span>
+        <span className="text-center">Ações</span>
+      </div>
+
+      {filtered.map((item) => (
+        <div
+          key={item.id}
+          className="grid grid-cols-5 px-4 py-4 border-b items-center"
+        >
+          <div className="text-center">
+            {item.cliente?.nome || "Sem cliente"}
+          </div>
+
+          <div className="text-center font-medium">
+            R$ {Number(item.total).toFixed(2)}
+          </div>
+
+          <div
+            className={`text-center ${
+              item.status === "pago"
+                ? "text-green-600"
+                : item.status === "cancelado"
+                ? "text-red-600"
+                : "text-yellow-600"
+            }`}
+          >
+            {item.status}
+          </div>
+
+          <div className="text-center">
+            {dayjs(item.created_at).format("DD/MM/YYYY")}
+          </div>
+
+          <div className="flex justify-center gap-2">
+            <button onClick={() => onEdit(item)}>
+              <SquarePen size={18} />
+            </button>
+            <button onClick={() => onDelete(item.id)}>
+              <Trash2 size={18} />
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}

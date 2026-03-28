@@ -30,7 +30,6 @@ export default function ScheduleList({
   const [selected, setSelected] = useState<ScheduleItem | null>(null);
   const [openModal, setOpenModal] = useState(false);
 
-  // Estados para busca e filtro
   const [search, setSearch] = useState("");
   const [filterStatus, setFilterStatus] = useState<string>("");
 
@@ -59,7 +58,6 @@ export default function ScheduleList({
     }
   };
 
-  // Filtra schedules por busca e status
   const filteredSchedules = useMemo(() => {
     return schedules.filter((item) => {
       const matchesSearch =
