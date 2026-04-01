@@ -31,7 +31,7 @@ export default function SalesList({ items, onEdit, onDelete }: Props) {
         <Search className="absolute top-2.5 left-3 text-gray-400" size={20} />
       </div>
 
-      <div className="grid grid-cols-5 px-4 py-3 text-xs text-gray-400 border-b">
+      <div className="text-[#A3AED0] text-[11px] font-bold uppercase tracking-widest grid grid-cols-5 px-4 py-2 border-b">
         <span className="text-center">Cliente</span>
         <span className="text-center">Total</span>
         <span className="text-center">Status</span>
@@ -69,10 +69,10 @@ export default function SalesList({ items, onEdit, onDelete }: Props) {
           </div>
 
           <div className="flex justify-center gap-2">
-            <button onClick={() => onEdit(item)}>
+            <button onClick={() => onEdit(item)} className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
               <SquarePen size={18} />
             </button>
-            <button onClick={() => onDelete(item.id)}>
+            <button onClick={() => onDelete(item.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
               <Trash2 size={18} />
             </button>
           </div>

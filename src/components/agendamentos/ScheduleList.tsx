@@ -104,7 +104,7 @@ export default function ScheduleList({
       </div>
 
       <div className="w-full">
-        <div className="grid grid-cols-6 px-4 py-3 text-xs font-semibold text-slate-400 uppercase border-b">
+        <div className="text-[#A3AED0] text-[11px] font-bold uppercase tracking-widest grid grid-cols-6 px-4 py-2 border-b">
           <span className="text-center">Data</span>
           <span className="text-center">Nome</span>
           <span className="text-center">Serviço</span>
