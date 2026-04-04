@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom"
 
 import Layout from "../components/layout/Layout"
 import Dashboard from "../pages/dashboard/Dashboard"
-// import Usuarios from "../pages/clientes/ClientList"
+import Usuarios from "../pages/usuarios/UserList"
 import Clientes from "../pages/clientes/ClientList"
 import Servicos from "../pages/servicos/ServiceList"
 import Produtos from "../pages/produtos/ProductList"
@@ -30,6 +30,7 @@ export default function Router() {
           }
         >
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/servicos" element={<Servicos />} />
           <Route path="/produtos" element={<Produtos />} />

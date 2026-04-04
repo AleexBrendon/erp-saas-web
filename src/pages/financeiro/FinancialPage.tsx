@@ -3,11 +3,13 @@ import { Plus } from "lucide-react";
 import FinancialList from "../../components/financeiro/FinancialList";
 import FinancialModal from "../../components/financeiro/FinancialModal";
 import { getFinanceiro, createFinanceiro, updateFinanceiro, deleteFinanceiro, type FinanceiroItem } from "../../storage/financialStorage";
+import FinanceiroViewModal from "../../components/financeiro/FinanceiroViewModal";
 
 export default function FinanceiroPage() {
   const [items, setItems] = useState<FinanceiroItem[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editData, setEditData] = useState<FinanceiroItem | null>(null);
+  const [selectedItem, setSelectedItem] = useState<FinanceiroItem | null>(null);
 
   const loadAll = async () => {
     const data = await getFinanceiro();
@@ -50,7 +52,26 @@ export default function FinanceiroPage() {
       <div className="p-[20px] bg-[#F8F9FD] min-h-screen">
 
         <div className="bg-white rounded-[5px] border shadow p-[20px]">
-          <FinancialList items={items} onEdit={(item) => { setEditData(item); setModalOpen(true); }} onDelete={remove} />
+          <FinancialList
+            items={items}
+            onEdit={(item) => {
+              setEditData(item);
+              setModalOpen(true);
+            }}
+            onDelete={remove}
+            onSelect={setSelectedItem}
+          />
+
+          <FinanceiroViewModal
+            open={!!selectedItem}
+            item={selectedItem}
+            onClose={() => setSelectedItem(null)}
+            onEdit={(item) => {
+              setSelectedItem(null);
+              setEditData(item);
+              setModalOpen(true);
+            }}
+          />
         </div>
 
         {modalOpen && (

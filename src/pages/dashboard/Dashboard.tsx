@@ -25,7 +25,6 @@ export default function Dashboard() {
     produtos: 0,
     agendamentos: 0,
   });
-  const [percentual, setPercentual] = useState(0);
   const [topClientes, setTopClientes] = useState<any[]>([]);
   const [topServicos, setTopServicos] = useState<any[]>([]);
   const [line, setLine] = useState<any>({
@@ -64,9 +63,10 @@ export default function Dashboard() {
         getAgendamentos(),
         getFinanceiro(),
       ]);
-    const filtrados = agendamentos.filter((a: any) =>
-      filtrarPeriodo(a.data, filtro)
-    );
+    const filtrados = agendamentos.filter((a: any) => {
+      if (!a.data) return false;
+      return filtrarPeriodo(a.data, filtro);
+    });
     setStats({
       clientes: clientes.length,
       servicos: servicos.length,
@@ -76,13 +76,15 @@ export default function Dashboard() {
     const modo = getModoAgrupamento();
     let labels: string[] = [];
     let valores: number[] = [];
-    // ===================== GRAFICO =====================
+
     if (tipo !== "servicos") {
       const grupos: Record<string, number> = {};
       const processar = (dataStr: string, valor: number) => {
         const d = new Date(dataStr);
+        if (isNaN(d.getTime())) return;
+
         let chave = "";
-        if (modo === "dia") chave = formatarDataLocal(dataStr);
+        if (modo === "dia") chave = formatarDataLocal(d);
         if (modo === "semana") {
           const inicioSemana = new Date(d);
           const dia = d.getDay();
@@ -95,6 +97,7 @@ export default function Dashboard() {
           const mes = String(d.getMonth() + 1).padStart(2, "0");
           chave = `${ano}-${mes}`;
         }
+
         grupos[chave] = (grupos[chave] || 0) + valor;
       };
       if (tipo === "agendamentos") {
@@ -166,9 +169,9 @@ export default function Dashboard() {
               },
             },
             colors: [
-              "#3b82f6", // azul (entradas)
-              "#ef4444", // vermelha (saídas)
-              "#22c55e", // verde (lucro)
+              "#3b82f6",
+              "#ef4444",
+              "#22c55e",
             ],
             fill: {
               type: "solid",
@@ -186,12 +189,13 @@ export default function Dashboard() {
         return;
       }
       const ordenado = Object.entries(grupos)
+        .filter(([chave]) => !!chave)
         .sort(([a], [b]) => new Date(a).getTime() - new Date(b).getTime());
 
       labels = ordenado.map(([data]) => data);
       valores = ordenado.map(([, valor]) => valor);
     }
-    // ===== SERVIÇOS (BAR)
+
     if (tipo === "servicos") {
       const map: any = {};
 
@@ -203,7 +207,7 @@ export default function Dashboard() {
       labels = Object.keys(map);
       valores = Object.values(map);
     }
-    // ===== LINE DEFAULT
+
     if (tipo === "agendamentos" || tipo === "servicos") {
       setLine({
         series: [
@@ -242,7 +246,11 @@ export default function Dashboard() {
             categories: labels,
             labels: {
               formatter: (val: string) => {
+                if (tipo === "servicos") {
+                  return val;
+                }
                 const d = new Date(val + "T00:00:00");
+                if (isNaN(d.getTime())) return val; 
                 const dia = String(d.getDate()).padStart(2, "0");
                 const mes = String(d.getMonth() + 1).padStart(2, "0");
                 const ano = d.getFullYear();
@@ -271,7 +279,7 @@ export default function Dashboard() {
         },
       });
     }
-    // ===================== CLIENTES =====================
+
     const mapClientes: any = {};
     filtrados.forEach((a: any) => {
       const nome = a.cliente?.nome || "N/A";
@@ -283,7 +291,7 @@ export default function Dashboard() {
         .sort((a: any, b: any) => b.total - a.total)
         .slice(0, 5)
     );
-    // ===================== SERVIÇOS DONUT =====================
+
     const mapServicos: any = {};
     filtrados.forEach((a: any) => {
       const nome = a.servico?.nome || "N/A";
@@ -359,17 +367,14 @@ export default function Dashboard() {
         tooltip: {
           y: {
             formatter: (val: number, opts: any) => {
-              const label = opts.w.globals.labels[opts.seriesIndex];
-              const total = opts.w.globals.seriesTotals.reduce(
-                (a: number, b: number) => a + b,
-                0
-              );
+              const globals = opts?.w?.globals;
+              if (!globals) return `${val}`;
+
+              const label = globals.labels?.[opts.seriesIndex] || "N/A";
+              const total = globals.seriesTotals?.reduce((a: number, b: number) => a + b, 0) || 1;
               const percent = ((val / total) * 100).toFixed(1);
-              return `${val} (${percent}%)`;
+              return `${label}: ${val} (${percent}%)`;
             },
-          },
-          title: {
-            formatter: (seriesName: string) => seriesName,
           },
         },
       },

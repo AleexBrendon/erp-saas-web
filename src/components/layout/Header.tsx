@@ -12,39 +12,27 @@ export default function Header() {
   const [notificacoes, setNotificacoes] = useState<any[]>([]);
 
   useEffect(() => {
-    // Buscar dados da empresa do usuário logado
-    axios.get("/api/empresa/me", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
-    })
-      .then(res => {
-        console.log("Empresa recebida:", res.data);
-        setEmpresa(res.data);
-      })
-      .catch(err => console.error("Erro ao buscar empresa:", err));
+  const token = localStorage.getItem("token");
+  if (!token) return;
 
-    // Buscar notificações recentes
-    // axios.get("/api/notificacoes", {
-    //   headers: {
-    //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //   },
-    // })
-    //   .then(res => {
-    //     const dados = Array.isArray(res.data)
-    //       ? res.data
-    //       : (res.data.data ? res.data.data : []);
-    //     setNotificacoes(dados);
-    //   })
-    //   .catch(err => console.error("Erro ao buscar notificações:", err));
-  }, []);
+  axios.get("/api/empresa/me", { headers: { Authorization: `Bearer ${token}` } })
+    .then(res => setEmpresa(res.data))
+    .catch(err => console.error("Erro ao buscar empresa:", err));
+
+  // axios.get("/api/notificacoes", { headers: { Authorization: `Bearer ${token}` } })
+  //   .then(res => {
+  //     const dados = Array.isArray(res.data) ? res.data : (res.data.data ?? []);
+  //     setNotificacoes(dados);
+  //   })
+  //   .catch(err => console.error("Erro ao buscar notificações:", err));
+}, []);
 
   return (
     <header className="w-full bg-white border-b px-6 py-3 flex items-center justify-between">
       <div></div>
 
-      {/* Right */}
       <div className="flex items-center gap-4">
 
-        {/* Notifications */}
         <div className="relative">
           <button className="relative p-2 rounded-lg hover:bg-gray-100">
             <Bell size={20} />
@@ -53,7 +41,6 @@ export default function Header() {
             )}
           </button>
 
-          {/* Dropdown de notificações */}
           {notificacoes.length > 0 && (
             <div className="absolute right-0 mt-2 w-64 bg-white border rounded shadow-lg z-50">
               {notificacoes.map(n => (
@@ -65,7 +52,6 @@ export default function Header() {
           )}
         </div>
 
-        {/* Empresa */}
         {empresa && (
           <div className="flex items-center gap-3 border-l pl-4">
             <div className="text-sm text-right hidden sm:block">

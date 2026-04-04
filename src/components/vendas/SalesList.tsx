@@ -7,15 +7,18 @@ type Props = {
   items: VendaItemAPI[];
   onEdit: (item: VendaItemAPI) => void;
   onDelete: (id: number) => void;
+  onSelect?: (item: any) => void;
 };
 
-export default function SalesList({ items, onEdit, onDelete }: Props) {
+export default function SalesList({ items, onEdit, onDelete, onSelect }: Props) {
   const [search, setSearch] = useState("");
 
   const filtered = useMemo(() => {
-    return items.filter((item) =>
-      item.cliente?.nome?.toLowerCase().includes(search.toLowerCase())
-    );
+    return items
+      .filter((item) =>
+        item.cliente?.nome?.toLowerCase().includes(search.toLowerCase())
+      )
+      .sort((a, b) => dayjs(b.created_at).unix() - dayjs(a.created_at).unix());
   }, [items, search]);
 
   return (
@@ -42,7 +45,8 @@ export default function SalesList({ items, onEdit, onDelete }: Props) {
       {filtered.map((item) => (
         <div
           key={item.id}
-          className="grid grid-cols-5 px-4 py-4 border-b items-center"
+          onClick={() => onSelect?.(item)}
+          className="grid grid-cols-5 px-4 py-4 border-b items-center hover:bg-gray-50 cursor-pointer"
         >
           <div className="text-center">
             {item.cliente?.nome || "Sem cliente"}
@@ -53,13 +57,12 @@ export default function SalesList({ items, onEdit, onDelete }: Props) {
           </div>
 
           <div
-            className={`text-center ${
-              item.status === "pago"
-                ? "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-green-100 text-green-600 uppercase"
-                : item.status === "cancelado"
+            className={`text-center ${item.status === "pago"
+              ? "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-green-100 text-green-600 uppercase"
+              : item.status === "cancelado"
                 ? "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-red-100 text-red-600 uppercase"
                 : "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-yellow-100 text-yellow-600 uppercase"
-            }`}
+              }`}
           >
             {item.status}
           </div>
@@ -69,10 +72,16 @@ export default function SalesList({ items, onEdit, onDelete }: Props) {
           </div>
 
           <div className="flex justify-center gap-2">
-            <button onClick={() => onEdit(item)} className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
+            <button onClick={(e) => {
+              e.stopPropagation();
+              onEdit(item);
+            }} className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors">
               <SquarePen size={18} />
             </button>
-            <button onClick={() => onDelete(item.id)} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
+            <button onClick={(e) => {
+              e.stopPropagation();
+              onDelete(item.id);
+            }} className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors">
               <Trash2 size={18} />
             </button>
           </div>

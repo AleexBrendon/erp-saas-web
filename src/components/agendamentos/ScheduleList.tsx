@@ -59,15 +59,17 @@ export default function ScheduleList({
   };
 
   const filteredSchedules = useMemo(() => {
-    return schedules.filter((item) => {
-      const matchesSearch =
-        item.client.toLowerCase().includes(search.toLowerCase()) ||
-        item.service.toLowerCase().includes(search.toLowerCase());
+    return schedules
+      .filter((item) => {
+        const matchesSearch =
+          item.client.toLowerCase().includes(search.toLowerCase()) ||
+          item.service.toLowerCase().includes(search.toLowerCase());
 
-      const matchesStatus = filterStatus ? item.status === filterStatus : true;
+        const matchesStatus = filterStatus ? item.status === filterStatus : true;
 
-      return matchesSearch && matchesStatus;
-    });
+        return matchesSearch && matchesStatus;
+      })
+      .sort((a, b) => dayjs(b.date).unix() - dayjs(a.date).unix());
   }, [schedules, search, filterStatus]);
 
   return (

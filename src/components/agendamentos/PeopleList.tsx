@@ -4,7 +4,7 @@ type Props = {
   people: Cliente[];
   selected: number | null;
   onSelect: (id: number) => void;
-  schedules: any[]; // 👈 novo
+  schedules: any[];
 };
 
 export default function PeopleList({ people, selected, onSelect, schedules }: Props) {

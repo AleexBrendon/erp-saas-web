@@ -9,17 +9,14 @@
   to { width: 0%; } 
 }
 
-/* Chrome, Safari e Edge */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
 
-/* Firefox */
 .scrollbar-hide {
   scrollbar-width: none;
 }
 
-/* IE e Edge antigo */
 .scrollbar-hide {
   -ms-overflow-style: none;
 }

@@ -1,6 +1,5 @@
 import { api } from "../api/axios"
 
-// 🔹 Tipo base
 export type Servico = {
   id: number;
   empresa_id?: number;
@@ -12,7 +11,6 @@ export type Servico = {
   updated_at?: string;
 };
 
-// 🔹 Tipo para criação/edição
 export type ServicoPayload = {
   nome: string;
   descricao: string;
@@ -21,13 +19,11 @@ export type ServicoPayload = {
   empresa_id?: number;
 };
 
-// GET
 export const getServicos = async (): Promise<Servico[]> => {
   const res = await api.get("/servicos");
   return Array.isArray(res.data) ? res.data : res.data.data;
 };
 
-// POST
 export const createServico = async (
   data: ServicoPayload
 ): Promise<Servico> => {
@@ -35,7 +31,6 @@ export const createServico = async (
   return res.data;
 };
 
-// PUT
 export const updateServico = async (
   id: number,
   data: ServicoPayload
@@ -44,7 +39,6 @@ export const updateServico = async (
   return res.data;
 };
 
-// DELETE
 export const deleteServico = async (id: number): Promise<void> => {
   await api.delete(`/servicos/${id}`);
 };

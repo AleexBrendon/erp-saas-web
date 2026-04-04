@@ -1,14 +1,13 @@
 import { api } from "../api/axios";
 
-// 🔹 Tipo base
 export type Agendamento = {
   id: number;
   empresa_id: number;
   cliente_id: number;
   servico_id: number;
   usuario_id: number;
-  data: string;       // YYYY-MM-DD
-  hora: string;       // HH:mm:ss
+  data: string;
+  hora: string;
   status: "agendado" | "confirmado" | "concluido" | "cancelado";
   observacao?: string;
 
@@ -31,7 +30,6 @@ export type Agendamento = {
   updated_at?: string;
 };
 
-// 🔹 Tipo para criação/edição
 export type AgendamentoPayload = {
   empresa_id: number;
   cliente_id: number;
@@ -43,13 +41,11 @@ export type AgendamentoPayload = {
   observacao?: string;
 };
 
-// GET
 export const getAgendamentos = async (): Promise<Agendamento[]> => {
   const res = await api.get("/agendamentos");
   return Array.isArray(res.data) ? res.data : res.data.data;
 };
 
-// POST
 export const createAgendamento = async (
   data: AgendamentoPayload
 ): Promise<Agendamento> => {
@@ -57,7 +53,6 @@ export const createAgendamento = async (
   return res.data;
 };
 
-// PUT
 export const updateAgendamento = async (
   id: number,
   data: AgendamentoPayload
@@ -66,7 +61,6 @@ export const updateAgendamento = async (
   return res.data;
 };
 
-// DELETE
 export const deleteAgendamento = async (id: number): Promise<void> => {
   await api.delete(`/agendamentos/${id}`);
 };

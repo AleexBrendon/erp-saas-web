@@ -5,7 +5,8 @@ export const ProductTable = ({
   Products,
   onEdit,
   onDelete,
-  openCreate
+  openCreate,
+  onSelect
 }: any) => {
 
   const [search, setSearch] = useState("");
@@ -54,7 +55,8 @@ export const ProductTable = ({
           {filtered?.map((p: any) => (
             <div
               key={p.id}
-              className="grid grid-cols-4 items-center py-3 hover:bg-slate-50 transition"
+              onClick={() => onSelect(p)}
+              className="grid grid-cols-4 items-center py-3 hover:bg-slate-50 transition cursor-pointer"
             >
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-blue-50 flex items-center justify-center text-[#5C67FF]">
@@ -73,25 +75,30 @@ export const ProductTable = ({
               </div>
 
               <div className="text-center">
-                <span className={`${
-                  Number(p.estoque) > 5
+                <span className={`${Number(p.estoque) > 5
                     ? "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-green-100 text-green-600 uppercase"
                     : "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-red-100 text-red-600 uppercase"
-                }`}>
+                  }`}>
                   {p.estoque} un
                 </span>
               </div>
 
               <div className="flex justify-center gap-2">
                 <button
-                  onClick={() => onEdit(p)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onEdit(p);
+                  }}
                   className="text-blue-500 hover:text-blue-600"
                 >
                   <SquarePen size={16} />
                 </button>
 
                 <button
-                  onClick={() => onDelete(p.id)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDelete(p.id);
+                  }}
                   className="text-red-500 hover:text-red-600"
                 >
                   <Trash2 size={16} />

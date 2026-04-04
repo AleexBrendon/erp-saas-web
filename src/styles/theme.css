@@ -1,15 +1,12 @@
 :root {
     --color-primary: #3B82F6;
     --color-primary-hover: #2563EB;
-    /* azul mais escuro para hover */
 
     --color-secondary: #8B5CF6;
     --color-secondary-hover: #7C3AED;
-    /* roxo mais escuro para hover */
 
     --color-tertiary: #EC4899;
     --color-tertiary-hover: #DB2777;
-    /* rosa mais escuro para hover */
 
     --color-background: #F1F1F1;
     --color-card: #E6E6E6;
@@ -29,11 +26,8 @@
 
     --gradient-navbar: linear-gradient(to right,
             #3B82F6,
-            /* azul */
             #5c78f6,
-            /* roxo */
             #48b8ec
-            /* rosa */
         );
 
     /* =========================

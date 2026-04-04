@@ -9,13 +9,11 @@ export type VendaItemAPI = {
   updated_at: string;
 };
 
-// Criar venda
 export const createVenda = async (data: any): Promise<VendaItemAPI> => {
   const res = await api.post("/vendas", data);
   return res.data;
 };
 
-// Atualizar venda
 export const updateVenda = async (id: number, data: any): Promise<VendaItemAPI> => {
   const res = await api.put(`/vendas/${id}`, data);
   return res.data;

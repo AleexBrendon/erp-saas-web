@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { X } from "lucide-react";
-//import SmartSelect from "../../components/itensVendidos/SmartSelect";
 import { useCatalogos } from "../../hooks/useCatalogos";
 import { api } from "../../api/axios";
 
@@ -22,7 +21,6 @@ export default function ItemVendaModal({
     preco_unitario: "",
   });
 
-  // 🔵 carregar vendas
   useEffect(() => {
     async function load() {
       try {
@@ -36,7 +34,6 @@ export default function ItemVendaModal({
     load();
   }, []);
 
-  // ✏️ preencher edição
   useEffect(() => {
     if (editData) {
       setForm({
@@ -84,41 +81,40 @@ export default function ItemVendaModal({
     Number(form.quantidade || 0) * Number(form.preco_unitario || 0);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+    <div
+      className="fixed inset-0 bg-black/60 flex items-center justify-center z-50"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-6 animate-in fade-in zoom-in-95"
+      >
 
-      {/* CONTAINER */}
-      <div className="w-full max-w-lg bg-white rounded-2xl shadow-2xl 
-                  animate-[fadeIn_.2s_ease,scaleIn_.2s_ease]">
-
-        {/* HEADER */}
-        <div className="flex items-center justify-between px-6 py-4">
-          <h2 className="text-lg font-semibold text-slate-800 tracking-tight">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-xl font-semibold">
             {editData ? "Editar item da venda" : "Adicionar item"}
           </h2>
 
-          <X
+          <button
             onClick={onClose}
-            className="cursor-pointer text-gray-400 hover:text-gray-600 transition"
-          />
+            className="text-gray-400 hover:text-gray-600"
+          >
+            <X size={20} />
+          </button>
         </div>
 
-        {/* BODY */}
-        <div className="p-6 space-y-6">
+        <div className="space-y-4">
 
-          {/* VENDA */}
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-              Venda
-            </label>
+          <div>
+            <label className="text-sm text-gray-500">Venda</label>
             <select
               autoFocus
               value={form.venda_id}
               onChange={(e) =>
                 setForm({ ...form, venda_id: Number(e.target.value) })
               }
-              className="w-full border rounded-xl px-3 py-2.5 text-sm 
-                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-                     outline-none transition"
+              className="w-full border rounded-lg px-3 py-2 mt-1 
+                     focus:ring-2 focus:ring-indigo-500 cursor-pointer"
             >
               <option value="">Selecione uma venda</option>
               {vendas.map((v) => (
@@ -129,11 +125,8 @@ export default function ItemVendaModal({
             </select>
           </div>
 
-          {/* PRODUTO */}
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-              Produto
-            </label>
+          <div>
+            <label className="text-sm text-gray-500">Produto</label>
             <select
               value={form.produto_id}
               onChange={(e) => {
@@ -148,9 +141,8 @@ export default function ItemVendaModal({
                   quantidade: 1,
                 });
               }}
-              className="w-full border rounded-xl px-3 py-2.5 text-sm 
-                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-                     outline-none transition"
+              className="w-full border rounded-lg px-3 py-2 mt-1 
+                     focus:ring-2 focus:ring-indigo-500 cursor-pointer"
             >
               <option value="">Selecione um produto</option>
               {produtos.map((p) => (
@@ -161,11 +153,8 @@ export default function ItemVendaModal({
             </select>
           </div>
 
-          {/* SERVIÇO */}
-          <div className="space-y-1">
-            <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-              Serviço
-            </label>
+          <div>
+            <label className="text-sm text-gray-500">Serviço</label>
             <select
               value={form.servico_id}
               onChange={(e) => {
@@ -180,9 +169,8 @@ export default function ItemVendaModal({
                   quantidade: 1,
                 });
               }}
-              className="w-full border rounded-xl px-3 py-2.5 text-sm 
-                     focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-                     outline-none transition"
+              className="w-full border rounded-lg px-3 py-2 mt-1 
+                     focus:ring-2 focus:ring-indigo-500 cursor-pointer"
             >
               <option value="">Selecione um serviço</option>
               {servicos.map((s) => (
@@ -193,13 +181,10 @@ export default function ItemVendaModal({
             </select>
           </div>
 
-          {/* QTD + PREÇO */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3">
 
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                Quantidade
-              </label>
+            <div>
+              <label className="text-sm text-gray-500">Quantidade</label>
               <input
                 type="number"
                 value={form.quantidade}
@@ -209,16 +194,13 @@ export default function ItemVendaModal({
                     quantidade: Number(e.target.value),
                   })
                 }
-                className="w-full border rounded-xl px-3 py-2.5 text-sm
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-                       outline-none transition"
+                className="w-full border rounded-lg px-3 py-2 mt-1
+                       focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
-            <div className="space-y-1">
-              <label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
-                Preço unitário
-              </label>
+            <div>
+              <label className="text-sm text-gray-500">Preço unitário</label>
               <input
                 type="number"
                 value={form.preco_unitario}
@@ -228,50 +210,44 @@ export default function ItemVendaModal({
                     preco_unitario: e.target.value,
                   })
                 }
-                className="w-full border rounded-xl px-3 py-2.5 text-sm
-                       focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500
-                       outline-none transition"
+                className="w-full border rounded-lg px-3 py-2 mt-1
+                       focus:ring-2 focus:ring-indigo-500"
               />
             </div>
 
           </div>
 
-          {/* TOTAL */}
-          <div className="flex items-center justify-between 
-                      bg-gradient-to-r from-indigo-50 to-indigo-100 
-                      border border-indigo-200 
-                      px-4 py-3 rounded-xl">
-
-            <span className="text-sm font-medium text-indigo-700">
+          <div
+            className="flex items-center justify-between 
+                   bg-gradient-to-r from-indigo-50 to-indigo-100 
+                   border border-indigo-200 
+                   px-4 py-3 rounded-xl"
+          >
+            <span className="text-lg font-semibold text-indigo-700">
               Total calculado
             </span>
 
-            <span className="text-xl font-semibold text-indigo-800 tracking-tight">
+            <span className="text-2xl font-bold text-indigo-800">
               R$ {total.toFixed(2)}
             </span>
           </div>
 
         </div>
 
-        {/* FOOTER */}
-        <div className="flex gap-3 px-6 py-4 border-t">
-
+        <div className="mt-6 flex gap-2">
           <button
             onClick={onClose}
-            className="flex-1 border rounded-xl py-2.5 text-sm 
-                   hover:bg-gray-50 active:scale-[0.98] transition"
+            className="flex-1 bg-indigo-500 text-white py-2 rounded-lg"
           >
             Cancelar
           </button>
 
           <button
             onClick={submit}
-            className="flex-1 bg-indigo-600 text-white py-2.5 rounded-xl text-sm
-                   hover:bg-indigo-700 active:scale-[0.98] transition"
+            className="flex-1 border border-indigo-500 text-indigo-500 py-2 rounded-lg"
           >
             Salvar item
           </button>
-
         </div>
       </div>
     </div>

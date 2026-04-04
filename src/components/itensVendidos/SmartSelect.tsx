@@ -29,7 +29,6 @@ export default function SmartSelect({
     return item[labelKey] || item.nome || item.descricao || "Sem nome";
   };
 
-  // 🔥 AQUI ESTAVA FALTANDO
   const filtered = options.filter((item) =>
     getLabel(item).toLowerCase().includes(search.toLowerCase())
   );

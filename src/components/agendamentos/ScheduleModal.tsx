@@ -207,13 +207,13 @@ export default function ScheduleModal({
           />
         </div>
 
-        <div className="flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 border rounded-lg">
+        <div className="mt-6 flex gap-2">
+          <button onClick={onClose} className="flex-1 bg-indigo-500 text-white py-2 rounded-lg">
             Cancelar
           </button>
 
           <button
-            className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700"
+            className="flex-1 border border-indigo-500 text-indigo-500 py-2 rounded-lg"
             onClick={() => onSave(form)}
           >
             {editData ? "Atualizar" : "Salvar"}

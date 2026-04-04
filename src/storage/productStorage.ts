@@ -1,6 +1,5 @@
 import { api } from "../api/axios"
 
-// 🔹 Tipo base
 export type Produto = {
   id: number;
   empresa_id?: number;
@@ -12,7 +11,6 @@ export type Produto = {
   updated_at?: string;
 };
 
-// 🔹 Tipo para criação/edição
 export type ProdutoPayload = {
   nome: string;
   descricao: string;
@@ -21,13 +19,11 @@ export type ProdutoPayload = {
   empresa_id?: number;
 };
 
-// GET
 export const getProdutos = async (): Promise<Produto[]> => {
   const res = await api.get("/produtos");
   return Array.isArray(res.data) ? res.data : res.data.data;
 };
 
-// POST
 export const createProduto = async (
   data: ProdutoPayload
 ): Promise<Produto> => {
@@ -35,7 +31,6 @@ export const createProduto = async (
   return res.data;
 };
 
-// PUT
 export const updateProduto = async (
   id: number,
   data: ProdutoPayload
@@ -44,7 +39,6 @@ export const updateProduto = async (
   return res.data;
 };
 
-// DELETE
 export const deleteProduto = async (id: number): Promise<void> => {
   await api.delete(`/produtos/${id}`);
 };

@@ -25,18 +25,17 @@ export default function ItemVendaList({ items, onEdit, onDelete }: Props) {
   };
 
   const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      const nome =
-        item.produto?.nome || item.servico?.nome || "";
-
-      return nome.toLowerCase().includes(search.toLowerCase());
-    });
+    return items
+      .filter((item) => {
+        const nome = item.produto?.nome || item.servico?.nome || "";
+        return nome.toLowerCase().includes(search.toLowerCase());
+      })
+      .sort((a, b) => dayjs(b.created_at).unix() - dayjs(a.created_at).unix());
   }, [items, search]);
 
   return (
     <div className="relative bg-white rounded-[5px] border shadow p-[20px]">
 
-      {/* 🔍 BUSCA */}
       <div className="flex gap-2 mt-6 mb-4">
         <div className="relative flex-1">
           <input
@@ -50,7 +49,6 @@ export default function ItemVendaList({ items, onEdit, onDelete }: Props) {
         </div>
       </div>
 
-      {/* HEADER */}
       <div className="grid grid-cols-6 px-4 py-3 text-xs font-semibold text-slate-400 uppercase border-b">
         <span className="text-center">Item</span>
         <span className="text-center">Qtd</span>
@@ -60,7 +58,6 @@ export default function ItemVendaList({ items, onEdit, onDelete }: Props) {
         <span className="text-center">Ações</span>
       </div>
 
-      {/* LISTA */}
       <div className="divide-y">
         {filteredItems.length === 0 && (
           <div className="p-6 text-center text-slate-400">
@@ -123,11 +120,10 @@ export default function ItemVendaList({ items, onEdit, onDelete }: Props) {
         })}
       </div>
 
-      {/* MODAL DETALHES */}
       {openModal && selected && (
         <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl shadow-xl w-full max-w-md p-6 relative">
-            
+
             <button
               onClick={handleClose}
               className="absolute top-4 right-4 text-slate-400 hover:text-slate-600"

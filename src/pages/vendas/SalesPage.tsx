@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Plus } from "lucide-react";
 import SalesList from "../../components/vendas/SalesList";
 import VendasModal, { type VendaFormData } from "../../components/vendas/SalesModal";
+import VendaViewModal from "../../components/vendas/VendaViewModal";
 import { getClientes } from "../../storage/clientStorage";
 import {
   getVendas,
@@ -16,6 +17,7 @@ export default function VendasPage() {
   const [clientes, setClientes] = useState<{ id: number; nome: string }[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editData, setEditData] = useState<VendaItemAPI | null>(null);
+  const [selectedVenda, setSelectedVenda] = useState(null);
 
   const loadAll = async () => {
     const data = await getVendas();
@@ -85,6 +87,17 @@ export default function VendasPage() {
               setModalOpen(true);
             }}
             onDelete={remove}
+            onSelect={setSelectedVenda}
+          />
+
+          <VendaViewModal
+            open={!!selectedVenda}
+            venda={selectedVenda}
+            onClose={() => setSelectedVenda(null)}
+            onEdit={(item) => {
+              setEditData(item);
+              setModalOpen(true);
+            }}
           />
         </div>
 

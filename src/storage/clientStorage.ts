@@ -1,6 +1,5 @@
 import { api } from "../api/axios"
 
-// 🔹 Tipo base
 export type Cliente = {
   id: number;
   nome: string;
@@ -12,7 +11,6 @@ export type Cliente = {
   updated_at?: string;
 };
 
-// 🔹 Tipo para criação/edição
 export type ClientePayload = {
   nome: string;
   email: string;
@@ -21,13 +19,11 @@ export type ClientePayload = {
   empresa_id?: number;
 };
 
-// GET
 export const getClientes = async (): Promise<Cliente[]> => {
   const res = await api.get("/clientes");
   return Array.isArray(res.data) ? res.data : res.data.data;
 };
 
-// POST
 export const createCliente = async (
   data: ClientePayload
 ): Promise<Cliente> => {
@@ -35,7 +31,6 @@ export const createCliente = async (
   return res.data;
 };
 
-// PUT
 export const updateCliente = async (
   id: number,
   data: ClientePayload
@@ -44,7 +39,6 @@ export const updateCliente = async (
   return res.data;
 };
 
-// DELETE
 export const deleteCliente = async (id: number): Promise<void> => {
   await api.delete(`/clientes/${id}`);
 };
