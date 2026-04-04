@@ -34,7 +34,7 @@ export default function ItemVendaList({ items, onEdit, onDelete }: Props) {
   }, [items, search]);
 
   return (
-    <div className="relative">
+    <div className="relative bg-white rounded-[5px] border shadow p-[20px]">
 
       {/* 🔍 BUSCA */}
       <div className="flex gap-2 mt-6 mb-4">

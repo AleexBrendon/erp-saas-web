@@ -55,10 +55,10 @@ export default function SalesList({ items, onEdit, onDelete }: Props) {
           <div
             className={`text-center ${
               item.status === "pago"
-                ? "text-green-600"
+                ? "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-green-100 text-green-600 uppercase"
                 : item.status === "cancelado"
-                ? "text-red-600"
-                : "text-yellow-600"
+                ? "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-red-100 text-red-600 uppercase"
+                : "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-yellow-100 text-yellow-600 uppercase"
             }`}
           >
             {item.status}

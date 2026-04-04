@@ -35,24 +35,28 @@ export default function FinanceiroPage() {
   };
 
   return (
-    <div className="p-[20px] bg-[#F8F9FD] min-h-screen">
-      <h1 className="text-title font-bold mb-[20px] text-colortitle">Financeiro</h1>
+    <div>
+      <div className="flex items-center justify-between mb-[20px]">
+        <h1 className="text-title font-bold mb-[20px] ml-[30px] text-colortitle">Financeiro</h1>
 
-      <button
-        onClick={() => { setEditData(null); setModalOpen(true); }}
-        className="flex items-center justify-center bg-[#5C67FF] hover:bg-[#4a54e1] text-white px-6 py-2.5 rounded-[5px] text-sm font-medium transition-all shadow-md mb-4"
-      >
-        <Plus size={18} />
-        Novo Lançamento
-      </button>
-
-      <div className="bg-white rounded-[5px] border shadow p-[20px]">
-        <FinancialList items={items} onEdit={(item) => { setEditData(item); setModalOpen(true); }} onDelete={remove} />
+        <button
+          onClick={() => { setEditData(null); setModalOpen(true); }}
+          className="bg-[#5C67FF] hover:bg-[#4a54e1] text-white px-6 py-2.5 rounded-xl text-sm font-medium transition-all shadow-md flex items-center gap-2 mb-[20px]"
+        >
+          <Plus size={18} />
+          Novo Lançamento
+        </button>
       </div>
+      <div className="p-[20px] bg-[#F8F9FD] min-h-screen">
 
-      {modalOpen && (
-        <FinancialModal open={modalOpen} onClose={() => setModalOpen(false)} onSave={save} editData={editData} />
-      )}
+        <div className="bg-white rounded-[5px] border shadow p-[20px]">
+          <FinancialList items={items} onEdit={(item) => { setEditData(item); setModalOpen(true); }} onDelete={remove} />
+        </div>
+
+        {modalOpen && (
+          <FinancialModal open={modalOpen} onClose={() => setModalOpen(false)} onSave={save} editData={editData} />
+        )}
+      </div>
     </div>
   );
 }

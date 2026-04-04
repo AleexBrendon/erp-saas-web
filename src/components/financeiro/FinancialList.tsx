@@ -74,7 +74,7 @@ export default function FinancialList({ items, onEdit, onDelete }: Props) {
             onClick={() => handleOpen(item)}
             className="grid grid-cols-5 items-center px-4 py-4 hover:bg-slate-50 cursor-pointer"
           >
-            <div className={`text-center font-medium ${item.tipo === "entrada" ? "text-green-600" : "text-red-600"}`}>
+            <div className={`text-center font-medium ${item.tipo === "entrada" ? "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-green-100 text-green-600 uppercase" : "inline-block text-xs font-medium px-3 py-2 rounded-[5px] bg-red-100 text-red-600 uppercase"}`}>
               {item.tipo}
             </div>
 

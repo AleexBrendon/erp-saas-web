@@ -1,121 +1,116 @@
-import { SquarePen, Trash2 } from "lucide-react";
+import { useState, useMemo } from "react";
+import { SquarePen, Trash2, Search } from "lucide-react";
 
-interface CustomerTableProps {
-  customers: any[];
-  onSelect: (c: any) => void;
-  selectedId?: number | null;
-  onEdit: (c: any) => void;
-  onDelete: (id: number) => void;
-  openCreate: () => void;
-  showNotify: (msg: string, type?: 'success' | 'error') => void;
-}
+export const CustomerTable = ({
+  customers,
+  onSelect,
+  selectedId,
+  onEdit,
+  onDelete,
+  openCreate
+}: any) => {
 
-const formatPhone = (value: string) => {
-  if (!value) return "";
+  const [search, setSearch] = useState("");
 
-  const v = value.replace(/\D/g, "").slice(0, 11);
+  const filteredCustomers = useMemo(() => {
+    return customers.filter((c: any) =>
+      c.nome.toLowerCase().includes(search.toLowerCase()) ||
+      c.email.toLowerCase().includes(search.toLowerCase())
+    );
+  }, [customers, search]);
 
-  if (v.length < 11) return v;
+  return (
+    <div className="">
 
-  return v.replace(/(\d{2})(\d{1})(\d{4})(\d{4})/, "($1) $2 $3-$4");
-};
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-title font-bold mb-[20px] ml-[30px] text-colortitle">
+          Lista de Clientes
+        </h1>
 
-const formatDocument = (value: string) => {
-  if (!value) return "";
+        <button
+          onClick={openCreate}
+          className="bg-indigo-500 hover:bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium shadow"
+        >
+          + Novo Cliente
+        </button>
+      </div>
 
-  const v = value.replace(/\D/g, "");
+      <div className="bg-white border rounded-lg p-4">
 
-  if (v.length <= 11) {
-    return v.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-  }
+        <div className="relative mb-4">
+          <input
+            type="text"
+            placeholder="Buscar por cliente..."
+            className="w-full border rounded-md pl-10 pr-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          <Search size={18} className="absolute left-3 top-2.5 text-gray-400" />
+        </div>
 
-  return v.replace(
-    /(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/,
-    "$1.$2.$3/$4-$5"
+        <div className="grid grid-cols-5 text-[11px] font-bold text-[#A3AED0] uppercase border-b pb-2 text-center">
+          <span>Cliente</span>
+          <span>Total</span>
+          <span>Status</span>
+          <span>Documento</span>
+          <span className="text-center">Ações</span>
+        </div>
+
+        <div className="divide-y text-center">
+
+          {filteredCustomers.length === 0 && (
+            <div className="py-6 text-center text-slate-400">
+              Nenhum cliente encontrado
+            </div>
+          )}
+
+          {filteredCustomers.map((c: any) => (
+            <div
+              key={c.id}
+              onClick={() => onSelect(c)}
+              className={`grid grid-cols-5 items-center py-3 text-sm cursor-pointer transition ${selectedId === c.id
+                  ? "bg-[#F4F7FE]"
+                  : "hover:bg-slate-50"
+                }`}
+            >
+              <span className="font-medium text-slate-800">
+                {c.nome}
+              </span>
+
+              <span className="text-slate-700">
+                {c.email}
+              </span>
+
+              <span className="text-slate-600">
+                {c.telefone}
+              </span>
+
+              <span className="text-slate-500">
+                {c.documento}
+              </span>
+
+              <div
+                className="flex justify-center gap-2"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => onEdit(c)}
+                  className="text-blue-500 hover:text-blue-600"
+                >
+                  <SquarePen size={16} />
+                </button>
+
+                <button
+                  onClick={() => onDelete(c.id)}
+                  className="text-red-500 hover:text-red-600"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
-
-export const CustomerTable = ({ 
-  customers, 
-  onSelect, 
-  selectedId, 
-  onEdit, 
-  onDelete, 
-  openCreate 
-}: CustomerTableProps) => (
-  <div className="flex-1 shadow-sm border">
-    <div className="flex justify-between items-center mb-[20px] ml-[30px]">
-      <h1 className="text-title font-bold">Lista de Clientes</h1>
-      <button
-        onClick={openCreate}
-        className="bg-[#5C67FF] hover:bg-[#4a54e1] text-white px-6 py-2.5 rounded-[10px] text-sm font-medium transition-all shadow-md shadow-blue-100"
-      >
-        + Novo Cliente
-      </button>
-    </div>
-
-    <table className="w-full text-left border-separate border-spacing-y-[10px] bg-[#F8F9FD] rounded-[10px] border-slate-100 p-[20px]">
-      <thead>
-        <tr className="text-[#A3AED0] text-[11px] font-bold uppercase tracking-widest">
-          <th className="px-4 pb-2">Nome</th>
-          <th className="px-4 pb-2">Email</th>
-          <th className="px-4 pb-2">Telefone</th>
-          <th className="px-4 pb-2">Documento</th>
-          <th className="px-4 pb-2 text-right">Ações</th>
-        </tr>
-      </thead>
-      <tbody>
-        {customers.map((c) => (
-          <tr 
-            key={c.id} 
-            onClick={() => onSelect(null)}
-            className={`group cursor-pointer transition-all ${selectedId === c.id ? 'bg-[#F4F7FE]' : 'hover:bg-slate-50'}`}
-          >
-            <td className="px-4 py-4 rounded-l-2xl border-y border-l border-transparent">
-              <div 
-                className="flex items-center gap-3 w-fit"
-                onClick={(e) => {
-                  e.stopPropagation(); 
-                  onSelect(c); 
-                }}
-              >
-                <div className="w-10 h-10 rounded-full bg-slate-200 overflow-hidden">
-                  <img src={`https://ui-avatars.com/api/?name=${c.nome}&background=E2E8F0&color=475569`} alt="" />
-                </div>
-                <span className="font-bold text-[#1B2559] text-sm hover:text-[#5C67FF] transition-all">
-                  {c.nome}
-                </span>
-              </div>
-            </td>
-            <td className="px-4 py-4 text-[#A3AED0] text-sm border-y border-transparent">{c.email}</td>
-            <td className="px-4 py-4 text-[#A3AED0] text-sm border-y border-transparent">{formatPhone(c.telefone)}</td>
-            <td className="px-4 py-4 text-sm text-slate-400 border-y border-transparent">{formatDocument(c.documento)}</td>
-            
-            <td className="px-4 py-4 rounded-r-2xl border-y border-r border-transparent text-right">
-              <div className="flex justify-end gap-2">
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onEdit(c);
-                  }}
-                  className="p-2 text-blue-500 hover:bg-blue-50 rounded-lg transition-colors"
-                >
-                  <SquarePen size={18} />
-                </button>
-                <button 
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    onDelete(c.id);
-                  }}
-                  className="p-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
-                >
-                  <Trash2 size={18} />
-                </button>
-              </div>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
