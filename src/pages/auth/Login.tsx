@@ -59,7 +59,7 @@ export default function Login() {
             </div>
 
             <div className="text-right">
-              <a href="#" className="text-sm text-gray-400 hover:text-white">
+              <a href="/forgot-password" className="text-sm text-gray-400 hover:text-white">
                 Esqueci minha senha
               </a>
             </div>

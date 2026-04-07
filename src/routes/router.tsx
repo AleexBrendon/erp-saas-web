@@ -11,6 +11,7 @@ import Vendas from "../pages/vendas/SalesPage"
 import ItensVendidos from "../pages/itensVendidos/ItemsSoldPage"
 import Financeiro from "../pages/financeiro/FinancialPage"
 import Login from "../pages/auth/Login"
+import ForgotPassword from "../pages/auth/ForgotPassword"
 import PrivateRoute from "./PrivateRoute"
 
 export default function Router() {
@@ -21,6 +22,7 @@ export default function Router() {
         <Route path="/" element={<Navigate to="/login" />} />
 
         <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
 
         <Route
           element={
@@ -30,7 +32,6 @@ export default function Router() {
           }
         >
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/usuarios" element={<Usuarios />} />
           <Route path="/clientes" element={<Clientes />} />
           <Route path="/servicos" element={<Servicos />} />
           <Route path="/produtos" element={<Produtos />} />
@@ -38,6 +39,14 @@ export default function Router() {
           <Route path="/vendas" element={<Vendas />} />
           <Route path="/itensVendidos" element={<ItensVendidos />} />
           <Route path="/financeiro" element={<Financeiro />} />
+          <Route
+            path="/usuarios"
+            element={
+              <PrivateRoute roles={["admin"]}>
+                <Usuarios />
+              </PrivateRoute>
+            }
+          />
         </Route>
 
       </Routes>

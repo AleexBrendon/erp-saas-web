@@ -65,9 +65,14 @@ export default function Sidebar() {
         <Link to="/dashboard" className="flex items-center gap-2 p-2 hover:bg-blue-100 rounded-lg font-semibold">
           <LayoutDashboard size={18} /> Dashboard
         </Link>
-        <Link to="/usuarios" className="flex items-center gap-2 p-2 hover:bg-blue-100 rounded-lg font-semibold">
-          <Users size={18} /> Usuários
-        </Link>
+        {user?.role === "admin" && (
+          <Link
+            to="/usuarios"
+            className="flex items-center gap-2 p-2 hover:bg-blue-100 rounded-lg font-semibold"
+          >
+            <Users size={18} /> Usuários
+          </Link>
+        )}
         <Link to="/clientes" className="flex items-center gap-2 p-2 hover:bg-blue-100 rounded-lg font-semibold">
           <Users size={18} /> Clientes
         </Link>

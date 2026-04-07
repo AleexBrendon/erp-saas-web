@@ -14,3 +14,21 @@ export async function login(email: string, password: string) {
 
   return usuario
 }
+
+export async function forgotPassword(email: string) {
+  return api.post("/forgot-password", { email })
+}
+
+export async function resetPassword(payload: {
+  email: string
+  token: string
+  password: string
+  password_confirmation: string
+}) {
+  return api.post("/reset-password", payload)
+}
+
+export function logout() {
+  localStorage.removeItem("token")
+  localStorage.removeItem("user")
+}

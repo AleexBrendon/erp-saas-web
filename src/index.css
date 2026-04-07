@@ -29,3 +29,11 @@
 .animate-fade-in {
   animation: fade-in 0.2s ease-out forwards;
 }
+
+.input {
+  @apply w-full px-4 py-3 rounded-xl bg-[#0b1120]/80 border border-[#1e293b] focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition;
+}
+
+.btn-primary {
+  @apply w-full py-3 rounded-xl font-semibold bg-gradient-to-r from-orange-400 via-pink-500 to-purple-600 hover:opacity-90 transition disabled:opacity-50;
+}
